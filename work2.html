@@ -89,6 +89,12 @@
       for(var i=0;i<localStorage.length;i++){
         var a1=document.createElement("a");
         var key0=localStorage.key(i);
+        for(var j=i+1;j<localStorage.length;j++){
+          var key1=localStorage.key(j);
+          if(localStorage.getItem(key0)==localStorage.getItem(key1)){
+            localStorage.removeItem(key1);
+          }
+        }
         a1.innerHTML=localStorage.getItem(key0);
         a1.href="#";
         div2.appendChild(a1);
@@ -101,6 +107,7 @@
       if(i1.value){
         localStorage.setItem(time,i1.value);
       }
+      
     }
     f.onclick=function(){
       localStorage.clear();
