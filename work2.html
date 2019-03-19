@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  	<title>历史记录</title>
+    <meta charset="UTF-8">
+    <style>
+        #i1{
+          border: 2px solid rgb(238, 169, 144);
+          width: 200px;
+          height: 50px;
+      
+        }
+        #i1:focus {
+            outline:none;
+            border: 2px solid rgb(238, 169, 144);
+        }
+        #i2{
+          border: 1px solid rgb(150, 146, 146);
+          background-color: rgba(233, 233, 233, 0.952);
+          text-align: center;
+          color: rgb(167, 163, 163);
+          width: 120px;
+          height: 40px;
+          line-height: 40px;
+        }
+        a{
+          text-align: center;
+          line-height: 40px;
+          background-color: rgb(226, 223, 223);
+          height: 40px;
+          float: left;
+          margin-right: 10px;
+          color: black;
+          margin-top: 10px;
+          text-decoration: none;
+        }
+        .div1{
+          padding: 20px;
+          width: 380px;
+          height: 500px;
+          border: 2px solid darkgrey;
+        }
+        .div3{
+          margin: 5px 0px;
+        }
+        span{
+          float: right;
+          background-color: rgb(226, 223, 223);
+          color: rgb(255, 255, 255);
+          width: 40px;
+          height: 40px;
+          text-align: center;
+          line-height: 40px;
+          cursor: pointer;
+          margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+  <div class="div1">
+    <form  id="testform" method="get" action="#">
+        <input type="search" name="history" required="required" id="i1" placeholder="请输入想查找的商品" list="name"/>
+          <datalist id="name">
+            <option>《HTML+CSS3从入门到精通》</option>
+            <option>电脑</option>
+            <option>华为手机</option>
+            <option>面包</option>
+          </datalist>
+        <input type="submit" value="搜索" id="i2"/>
+    </form>
+    <div class="div3">最近搜索</div>
+    <div id="div2">
+
+    </div>
+    <span id="f">✖</span>
+  </div>
+
+</body>
+<script>
+    window.onload=function(){
+      var div2=document.getElementById("div2");
+      var f=document.getElementById("f");
+      if(localStorage.length!=0){
+        f.style.display="block";
+      }
+      else{
+        f.style.display="none";
+      }
+      for(var i=0;i<localStorage.length;i++){
+        var a1=document.createElement("a");
+        var key0=localStorage.key(i);
+        a1.innerHTML=localStorage.getItem(key0);
+        a1.href="#";
+        div2.appendChild(a1);
+      }
+    }
+    var i1=document.getElementById("i1");
+    var i2=document.getElementById("i2");
+    var time = new Date().getTime();
+    i2.onclick=function(){
+      if(i1.value){
+        localStorage.setItem(time,i1.value);
+      }
+    }
+    f.onclick=function(){
+      localStorage.clear();
+      div2.innerHTML="";
+      f.style.display="none";
+    }
+</script>
+</html>
