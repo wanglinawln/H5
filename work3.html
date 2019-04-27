@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            margin: 0px;
+        }
+        #card{
+            width: 400px;
+            height: 200px;
+            text-align: center;
+            line-height: 200px;
+            font-size: 50px;
+            background-color: beige;
+        }
+        #canvas{
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
+<body>
+    <div id="card">
+        <p id="word"> </p>         
+    </div>
+    <canvas id="canvas" width="400px" height="200px"></canvas>
+</body>
+<script>
+    var arr=new Array(50);
+    arr[0]='一等奖';
+    arr[1]='二等奖';
+    arr[2]='二等奖';
+    arr[3]='三等奖';
+    arr[4]='三等奖';
+    arr[5]='三等奖';
+    for(var i=6;i<arr.length;i++){
+        arr[i]='谢谢惠顾';
+    }
+    var canvas=document.getElementById("canvas");
+    var context=canvas.getContext("2d");
+    context.fillStyle="#d1d1d1";
+    context.fillRect(0,0,400,200);
+    context.globalCompositeOperation="destination-out";
+    
+    function finish(){
+        var imgData=context.getImageData(0,0,400,200);
+        var count=0;
+        for(var i=3;i<imgData.data.length;i+=4){
+            var alpha=imgData.data[i];
+            if(alpha==0){
+                count+=1;
+            }
+        }
+        var persent=count/(imgData.data.length/4);
+        if(persent>=0.85){
+            context.clearRect(0,0,400,200);
+        }
+    }
+
+
+    function draw(x,y){
+        context.beginPath();
+        var x1=x-canvas.offsetLeft;
+        var y1=y-canvas.offsetTop;
+        context.arc(x1,y1,25,0,2*Math.PI);
+        context.fillStyle="beige";
+        context.fill();
+        context.closePath();
+        finish();
+    }
+
+    canvas.addEventListener('click',move);
+    canvas.addEventListener('mousedown',drawArc);
+    canvas.addEventListener('mouseup',function(){
+        this.removeEventListener('mousemove',move);
+    });
+
+    function drawArc(e){
+        e.preventDefault();
+        e.target.addEventListener('mousemove',move);
+    }
+
+    function move(e){
+        e.preventDefault();
+        draw(e.clientX,e.clientY);
+    }
+
+    window.onload=function(){
+        var p=document.getElementById("word");
+        var index=Math.floor(Math.random()*50);
+        p.innerHTML=arr[index];
+    }
+</script>
+</head>
+</html>
